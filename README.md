@@ -11,7 +11,7 @@ Creat Git account 2025.1.22
 
 1. Use English for all names.
 2. Use lowercase letters with words separated by underscores maintain consistency.
-3. Use the YYYY-MM-DD format for chronological sorting.
+3. Use the YYYY_MM_DD format for chronological sorting.
 4. Use version numbers as _vX.X (e.g., _v1.0).)
 5. Ensure folder names clearly reflect the task or project module.
 6. Organize files into a workflow using numbers.
@@ -23,18 +23,20 @@ Creat Git account 2025.1.22
 
 For example:
 ```
+.
 ├── 01_my_project
-│   ├── data                  
-│   │   ├── 00_raw_data.txt   
+│   ├── data
+│   │   ├── 00_raw_data.txt
 │   │   └── 01_clean_data.txt
 │   ├── results
+│   │   ├── 02_analysis_report_2025_01_22.pdf
 │   │   ├── 03_tSNE.png
-│   │   └── 03_volcano_plot.pdf
+│   │   └── 03_volcano_plot_v1.0.pdf
 │   └── scripts
 │       ├── 01_data_clean.R
 │       ├── 02_analysis.R
 │       └── 03_plotting.R
 └── 02_Other_project
 
-6 directories, 7 files
+6 directories, 8 files
 ```
