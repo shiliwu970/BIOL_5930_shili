@@ -13,7 +13,7 @@ Creat Git account 2025.1.22
 (6)Organize files into a workflow using numbers.
 
 ##Structure:
-(1)Create a separate top-level folder for each project or task
+(1)Create a separate top-level folder for each project or task.
 (2)Organize subfolders within the project folder based on data, analysis, documents, etc.
 
 For example:
