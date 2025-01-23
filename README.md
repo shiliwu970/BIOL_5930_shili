@@ -2,5 +2,4 @@
 Creat Git account 2025.1.22
 ## Reproducibility
 
-I learned a lot!
-day day up
+please add a README file that describes: your goals, what naming system and structure you will follow.
