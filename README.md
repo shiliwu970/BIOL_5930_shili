@@ -6,11 +6,12 @@ Creat Git account 2025.1.22
 ## Goal:
 
 The primary goals of this project are:
-1.Characterize the Ciona proteome: Establish a high-resolution proteome atlas covering multiple developmental stages to understand the temporal dynamics of protein expression.
-2.Compare multi-omics profiles: Integrate proteomic and transcriptomic data to assess evolutionary conservation and divergence in gene expression regulation.
-3.Test the hourglass model: Evaluate whether protein-level conservation follows the hourglass model, which posits that mid-developmental stages show the highest evolutionary constraint.
-4.Identify divergence in early vertebrate evolution: Investigate the extent of conservation and divergence between Ciona (a tunicate) and Xenopus (a vertebrate), particularly during gastrulation and neurulation.
-5.Provide a valuable resource: Offer a publicly available dataset for researchers studying developmental biology, evolution, and multi-omics analyses.
+
+1. Characterize the Ciona proteome: Establish a high-resolution proteome atlas covering multiple developmental stages to understand the temporal dynamics of protein expression.
+2. Compare multi-omics profiles: Integrate proteomic and transcriptomic data to assess evolutionary conservation and divergence in gene expression regulation.
+3. Test the hourglass model: Evaluate whether protein-level conservation follows the hourglass model, which posits that mid-developmental stages show the highest evolutionary constraint.
+4. Identify divergence in early vertebrate evolution: Investigate the extent of conservation and divergence between Ciona (a tunicate) and Xenopus (a vertebrate), particularly during gastrulation and neurulation.
+5. Provide a valuable resource: Offer a publicly available dataset for researchers studying developmental biology, evolution, and multi-omics analyses.
 
 ## Naming system:
 
