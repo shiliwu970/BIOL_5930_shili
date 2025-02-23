@@ -46,6 +46,49 @@ For example:
 
 6 directories, 8 files
 ```
+## Data download
+```
+fastq-dl -a PRJNA993286 --prefix PRJNA993286 --cpus 16
+```
+The output is
+```
+tree -L 1 
+.
+├── multiqc_data
+├── PRJNA993286.metadata.tsv
+├── SRR25223640_1.fastq.gz
+├── SRR25223640_2.fastq.gz
+├── SRR25223641_1.fastq.gz
+├── SRR25223641_2.fastq.gz
+├── SRR25223642_1.fastq.gz
+├── SRR25223642_2.fastq.gz
+├── SRR25223643_1.fastq.gz
+├── SRR25223643_2.fastq.gz
+├── SRR25223644_1.fastq.gz
+├── SRR25223644_2.fastq.gz
+├── SRR25223645_1.fastq.gz
+├── SRR25223645_2.fastq.gz
+├── SRR25223646_1.fastq.gz
+├── SRR25223646_2.fastq.gz
+├── SRR25223647_1.fastq.gz
+├── SRR25223647_2.fastq.gz
+├── SRR25223648_1.fastq.gz
+├── SRR25223648_2.fastq.gz
+├── SRR25223649_1.fastq.gz
+├── SRR25223649_2.fastq.gz
+├── SRR25223650_1.fastq.gz
+├── SRR25223650_2.fastq.gz
+├── SRR25223651_1.fastq.gz
+├── SRR25223651_2.fastq.gz
+├── SRR25223652_1.fastq.gz
+├── SRR25223652_2.fastq.gz
+├── SRR25223653_1.fastq.gz
+├── SRR25223653_2.fastq.gz
+├── SRR25223654_1.fastq.gz
+├── SRR25223654_2.fastq.gz
+├── SRR25223655_1.fastq.gz
+└── SRR25223655_2.fastq.gz
+```
 
 ## quality report generate
 ``` 
