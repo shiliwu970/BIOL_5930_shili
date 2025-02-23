@@ -107,3 +107,50 @@ cd /data/projects/junhao.chen/shili_homework/
 cat id | while read id; do echo "hisat2 --new-summary --summary-file ${id}.log --threads 20 -x /data/projects/junhao.chen/shili_homework/00ref/Ciona_robusta -1 /data/projects/junhao.chen/shili_homework/01_raw_data/${id}_1.fastq.gz -2 /data/projects/junhao.chen/shili_homework/01_raw_data/${id}_2.fastq.gz | samtools sort -@ 4 -o /data/projects/junhao.chen
 /shili_homework/02_hisat2_mapping/${id}.sorted.bam -" ; done > run_hisat2.sh
 ```
+The command looks like:
+```
+#!/usr/bin/env bash
+
+#SBATCH --job-name=hisat2
+#SBATCH --partition=defq
+#SBATCH -n 1
+#SBATCH -c 24
+#SBATCH --get-user-env
+#SBATCH --output=%j.out
+
+export TMPDIR=/data/projects/junhao.chen/shili_homework/tmp/
+mkdir -p $TMPDIR
+export SAMTOOLS_TMPDIR=$TMPDIR
+
+hisat2 --new-summary --summary-file SRR25223640.log --threads 20 -x /data/projects/junhao.chen/shili_homework/00ref/Ciona_robusta -1 /data/projects/junhao.chen/shili_homework/01_raw_data/SRR25223640_1.fastq.gz -2 /data/projects/junhao.chen/shili_homework/01_raw_data/SRR25223640_2.fastq.gz | samtools sort -@ 4 -T ${TMPDIR}/SRR25223640 -o /data/projects/junhao.chen/shili_homework/02_hisat2_mapping/SRR25223640.sorted.bam -
+hisat2 --new-summary --summary-file SRR25223641.log --threads 20 -x /data/projects/junhao.chen/shili_homework/00ref/Ciona_robusta -1 /data/projects/junhao.chen/shili_homework/01_raw_data/SRR25223641_1.fastq.gz -2 /data/projects/junhao.chen/shili_homework/01_raw_data/SRR25223641_2.fastq.gz | samtools sort -@ 4 -T ${TMPDIR}/SRR25223641 -o /data/projects/junhao.chen/shili_homework/02_hisat2_mapping/SRR25223641.sorted.bam -
+hisat2 --new-summary --summary-file SRR25223642.log --threads 20 -x /data/projects/junhao.chen/shili_homework/00ref/Ciona_robusta -1 /data/projects/junhao.chen/shili_homework/01_raw_data/SRR25223642_1.fastq.gz -2 /data/projects/junhao.chen/shili_homework/01_raw_data/SRR25223642_2.fastq.gz | samtools sort -@ 4 -T ${TMPDIR}/SRR25223642 -o /data/projects/junhao.chen/shili_homework/02_hisat2_mapping/SRR25223642.sorted.bam -
+hisat2 --new-summary --summary-file SRR25223643.log --threads 20 -x /data/projects/junhao.chen/shili_homework/00ref/Ciona_robusta -1 /data/projects/junhao.chen/shili_homework/01_raw_data/SRR25223643_1.fastq.gz -2 /data/projects/junhao.chen/shili_homework/01_raw_data/SRR25223643_2.fastq.gz | samtools sort -@ 4 -T ${TMPDIR}/SRR25223643 -o /data/projects/junhao.chen/shili_homework/02_hisat2_mapping/SRR25223643.sorted.bam -
+hisat2 --new-summary --summary-file SRR25223644.log --threads 20 -x /data/projects/junhao.chen/shili_homework/00ref/Ciona_robusta -1 /data/projects/junhao.chen/shili_homework/01_raw_data/SRR25223644_1.fastq.gz -2 /data/projects/junhao.chen/shili_homework/01_raw_data/SRR25223644_2.fastq.gz | samtools sort -@ 4 -T ${TMPDIR}/SRR25223644 -o /data/projects/junhao.chen/shili_homework/02_hisat2_mapping/SRR25223644.sorted.bam -
+hisat2 --new-summary --summary-file SRR25223645.log --threads 20 -x /data/projects/junhao.chen/shili_homework/00ref/Ciona_robusta -1 /data/projects/junhao.chen/shili_homework/01_raw_data/SRR25223645_1.fastq.gz -2 /data/projects/junhao.chen/shili_homework/01_raw_data/SRR25223645_2.fastq.gz | samtools sort -@ 4 -T ${TMPDIR}/SRR25223645 -o /data/projects/junhao.chen/shili_homework/02_hisat2_mapping/SRR25223645.sorted.bam -
+hisat2 --new-summary --summary-file SRR25223646.log --threads 20 -x /data/projects/junhao.chen/shili_homework/00ref/Ciona_robusta -1 /data/projects/junhao.chen/shili_homework/01_raw_data/SRR25223646_1.fastq.gz -2 /data/projects/junhao.chen/shili_homework/01_raw_data/SRR25223646_2.fastq.gz | samtools sort -@ 4 -T ${TMPDIR}/SRR25223646 -o /data/projects/junhao.chen/shili_homework/02_hisat2_mapping/SRR25223646.sorted.bam -
+hisat2 --new-summary --summary-file SRR25223647.log --threads 20 -x /data/projects/junhao.chen/shili_homework/00ref/Ciona_robusta -1 /data/projects/junhao.chen/shili_homework/01_raw_data/SRR25223647_1.fastq.gz -2 /data/projects/junhao.chen/shili_homework/01_raw_data/SRR25223647_2.fastq.gz | samtools sort -@ 4 -T ${TMPDIR}/SRR25223647 -o /data/projects/junhao.chen/shili_homework/02_hisat2_mapping/SRR25223647.sorted.bam -
+hisat2 --new-summary --summary-file SRR25223648.log --threads 20 -x /data/projects/junhao.chen/shili_homework/00ref/Ciona_robusta -1 /data/projects/junhao.chen/shili_homework/01_raw_data/SRR25223648_1.fastq.gz -2 /data/projects/junhao.chen/shili_homework/01_raw_data/SRR25223648_2.fastq.gz | samtools sort -@ 4 -T ${TMPDIR}/SRR25223648 -o /data/projects/junhao.chen/shili_homework/02_hisat2_mapping/SRR25223648.sorted.bam -
+hisat2 --new-summary --summary-file SRR25223649.log --threads 20 -x /data/projects/junhao.chen/shili_homework/00ref/Ciona_robusta -1 /data/projects/junhao.chen/shili_homework/01_raw_data/SRR25223649_1.fastq.gz -2 /data/projects/junhao.chen/shili_homework/01_raw_data/SRR25223649_2.fastq.gz | samtools sort -@ 4 -T ${TMPDIR}/SRR25223649 -o /data/projects/junhao.chen/shili_homework/02_hisat2_mapping/SRR25223649.sorted.bam -
+hisat2 --new-summary --summary-file SRR25223650.log --threads 20 -x /data/projects/junhao.chen/shili_homework/00ref/Ciona_robusta -1 /data/projects/junhao.chen/shili_homework/01_raw_data/SRR25223650_1.fastq.gz -2 /data/projects/junhao.chen/shili_homework/01_raw_data/SRR25223650_2.fastq.gz | samtools sort -@ 4 -T ${TMPDIR}/SRR25223650 -o /data/projects/junhao.chen/shili_homework/02_hisat2_mapping/SRR25223650.sorted.bam -
+hisat2 --new-summary --summary-file SRR25223651.log --threads 20 -x /data/projects/junhao.chen/shili_homework/00ref/Ciona_robusta -1 /data/projects/junhao.chen/shili_homework/01_raw_data/SRR25223651_1.fastq.gz -2 /data/projects/junhao.chen/shili_homework/01_raw_data/SRR25223651_2.fastq.gz | samtools sort -@ 4 -T ${TMPDIR}/SRR25223651 -o /data/projects/junhao.chen/shili_homework/02_hisat2_mapping/SRR25223651.sorted.bam -
+hisat2 --new-summary --summary-file SRR25223652.log --threads 20 -x /data/projects/junhao.chen/shili_homework/00ref/Ciona_robusta -1 /data/projects/junhao.chen/shili_homework/01_raw_data/SRR25223652_1.fastq.gz -2 /data/projects/junhao.chen/shili_homework/01_raw_data/SRR25223652_2.fastq.gz | samtools sort -@ 4 -T ${TMPDIR}/SRR25223652 -o /data/projects/junhao.chen/shili_homework/02_hisat2_mapping/SRR25223652.sorted.bam -
+hisat2 --new-summary --summary-file SRR25223653.log --threads 20 -x /data/projects/junhao.chen/shili_homework/00ref/Ciona_robusta -1 /data/projects/junhao.chen/shili_homework/01_raw_data/SRR25223653_1.fastq.gz -2 /data/projects/junhao.chen/shili_homework/01_raw_data/SRR25223653_2.fastq.gz | samtools sort -@ 4 -T ${TMPDIR}/SRR25223653 -o /data/projects/junhao.chen/shili_homework/02_hisat2_mapping/SRR25223653.sorted.bam -
+hisat2 --new-summary --summary-file SRR25223654.log --threads 20 -x /data/projects/junhao.chen/shili_homework/00ref/Ciona_robusta -1 /data/projects/junhao.chen/shili_homework/01_raw_data/SRR25223654_1.fastq.gz -2 /data/projects/junhao.chen/shili_homework/01_raw_data/SRR25223654_2.fastq.gz | samtools sort -@ 4 -T ${TMPDIR}/SRR25223654 -o /data/projects/junhao.chen/shili_homework/02_hisat2_mapping/SRR25223654.sorted.bam -
+hisat2 --new-summary --summary-file SRR25223655.log --threads 20 -x /data/projects/junhao.chen/shili_homework/00ref/Ciona_robusta -1 /data/projects/junhao.chen/shili_homework/01_raw_data/SRR25223655_1.fastq.gz -2 /data/projects/junhao.chen/shili_homework/01_raw_data/SRR25223655_2.fastq.gz | samtools sort -@ 4 -T ${TMPDIR}/SRR25223655 -o /data/projects/junhao.chen/shili_homework/02_hisat2_mapping/SRR25223655.sorted.bam -
+```
+The output is:
+```
+/data/projects/junhao.chen/shili_homework/02_hisat2_mapping
+├── SRR25223640.sorted.bam
+├── SRR25223641.sorted.bam
+├── SRR25223642.sorted.bam
+├── SRR25223643.sorted.bam
+├── SRR25223644.sorted.bam
+├── SRR25223645.sorted.bam
+├── SRR25223646.sorted.bam
+├── SRR25223647.sorted.bam
+└── SRR25223648.sorted.bam
+
+0 directories, 9 files
+```
