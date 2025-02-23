@@ -53,6 +53,7 @@ cd /data/projects/junhao.chen/shili_homework/01_raw_data
 srun --mincpus 40 fastqc -t 40 *gz 
 srun --mem 515000 --mincpus 16 fastqc -t 16 *gz
 multiqc .
+```
 
 
 ## generate mapping command
@@ -62,3 +63,4 @@ ls *gz | sed -r 's/_[12].fastq.gz//' | sort | uniq > ../id
 cd /data/projects/junhao.chen/shili_homework/
 cat id | while read id; do echo "hisat2 --new-summary --summary-file ${id}.log --threads 20 -x /data/projects/junhao.chen/shili_homework/00ref/Ciona_robusta -1 /data/projects/junhao.chen/shili_homework/01_raw_data/${id}_1.fastq.gz -2 /data/projects/junhao.chen/shili_homework/01_raw_data/${id}_2.fastq.gz | samtools sort -@ 4 -o /data/projects/junhao.chen
 /shili_homework/02_hisat2_mapping/${id}.sorted.bam -" ; done > run_hisat2.sh
+```
