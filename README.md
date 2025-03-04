@@ -1,34 +1,36 @@
 # BIOL_5930_shili
-Creat Git account 2025.1.22
-## Reproducibility
+
+Creat Git account 2025.1.22 \## Reproducibility
 
 ### please add a README file that describes: your goals, what naming system and structure you will follow
+
 ## Goal:
 
 The primary goals of this project are:
 
-1. Characterize the Ciona proteome: Establish a high-resolution proteome atlas covering multiple developmental stages to understand the temporal dynamics of protein expression.
-2. Compare multi-omics profiles: Integrate proteomic and transcriptomic data to assess evolutionary conservation and divergence in gene expression regulation.
-3. Test the hourglass model: Evaluate whether protein-level conservation follows the hourglass model, which posits that mid-developmental stages show the highest evolutionary constraint.
-4. Identify divergence in early vertebrate evolution: Investigate the extent of conservation and divergence between Ciona (a tunicate) and Xenopus (a vertebrate), particularly during gastrulation and neurulation.
-5. Provide a valuable resource: Offer a publicly available dataset for researchers studying developmental biology, evolution, and multi-omics analyses.
+1.  Characterize the Ciona proteome: Establish a high-resolution proteome atlas covering multiple developmental stages to understand the temporal dynamics of protein expression.
+2.  Compare multi-omics profiles: Integrate proteomic and transcriptomic data to assess evolutionary conservation and divergence in gene expression regulation.
+3.  Test the hourglass model: Evaluate whether protein-level conservation follows the hourglass model, which posits that mid-developmental stages show the highest evolutionary constraint.
+4.  Identify divergence in early vertebrate evolution: Investigate the extent of conservation and divergence between Ciona (a tunicate) and Xenopus (a vertebrate), particularly during gastrulation and neurulation.
+5.  Provide a valuable resource: Offer a publicly available dataset for researchers studying developmental biology, evolution, and multi-omics analyses.
 
 ## Naming system:
 
-1. Use English for all names.
-2. Use lowercase letters with words separated by underscores maintain consistency.
-3. Use the YYYY_MM_DD format for chronological sorting.
-4. Use version numbers as _vX.X (e.g., _v1.0).)
-5. Ensure folder names clearly reflect the task or project module.
-6. Organize files into a workflow using numbers.
+1.  Use English for all names.
+2.  Use lowercase letters with words separated by underscores maintain consistency.
+3.  Use the YYYY_MM_DD format for chronological sorting.
+4.  Use version numbers as \_vX.X (e.g., \_v1.0).)
+5.  Ensure folder names clearly reflect the task or project module.
+6.  Organize files into a workflow using numbers.
 
 ## Structure:
 
-1. Create a separate top-level folder for each project or task.
-2. Organize subfolders within the project folder based on data, analysis, documents, etc.
+1.  Create a separate top-level folder for each project or task.
+2.  Organize subfolders within the project folder based on data, analysis, documents, etc.
 
 For example:
-```
+
+```         
 .
 ├── 01_my_project
 │   ├── data
@@ -46,12 +48,16 @@ For example:
 
 6 directories, 8 files
 ```
+
 ## Data download
-```
+
+```         
 fastq-dl -a PRJNA993286 --prefix PRJNA993286 --cpus 16
 ```
+
 The output is
-```
+
+```         
 tree -L 1 
 .
 ├── multiqc_data
@@ -91,24 +97,27 @@ tree -L 1
 ```
 
 ## quality report generate
-``` 
+
+```         
 cd /data/projects/junhao.chen/shili_homework/01_raw_data
 srun --mincpus 40 fastqc -t 40 *gz 
 srun --mem 515000 --mincpus 16 fastqc -t 16 *gz
 multiqc .
 ```
 
-
 ## generate mapping command
-``` 
+
+```         
 cd /data/projects/junhao.chen/shili_homework/01_raw_data
 ls *gz | sed -r 's/_[12].fastq.gz//' | sort | uniq > ../id
 cd /data/projects/junhao.chen/shili_homework/
 cat id | while read id; do echo "hisat2 --new-summary --summary-file ${id}.log --threads 20 -x /data/projects/junhao.chen/shili_homework/00ref/Ciona_robusta -1 /data/projects/junhao.chen/shili_homework/01_raw_data/${id}_1.fastq.gz -2 /data/projects/junhao.chen/shili_homework/01_raw_data/${id}_2.fastq.gz | samtools sort -@ 4 -o /data/projects/junhao.chen
 /shili_homework/02_hisat2_mapping/${id}.sorted.bam -" ; done > run_hisat2.sh
 ```
+
 The command looks like:
-```
+
+```         
 #!/usr/bin/env bash
 
 #SBATCH --job-name=hisat2
@@ -139,8 +148,10 @@ hisat2 --new-summary --summary-file SRR25223653.log --threads 20 -x /data/projec
 hisat2 --new-summary --summary-file SRR25223654.log --threads 20 -x /data/projects/junhao.chen/shili_homework/00ref/Ciona_robusta -1 /data/projects/junhao.chen/shili_homework/01_raw_data/SRR25223654_1.fastq.gz -2 /data/projects/junhao.chen/shili_homework/01_raw_data/SRR25223654_2.fastq.gz | samtools sort -@ 4 -T ${TMPDIR}/SRR25223654 -o /data/projects/junhao.chen/shili_homework/02_hisat2_mapping/SRR25223654.sorted.bam -
 hisat2 --new-summary --summary-file SRR25223655.log --threads 20 -x /data/projects/junhao.chen/shili_homework/00ref/Ciona_robusta -1 /data/projects/junhao.chen/shili_homework/01_raw_data/SRR25223655_1.fastq.gz -2 /data/projects/junhao.chen/shili_homework/01_raw_data/SRR25223655_2.fastq.gz | samtools sort -@ 4 -T ${TMPDIR}/SRR25223655 -o /data/projects/junhao.chen/shili_homework/02_hisat2_mapping/SRR25223655.sorted.bam -
 ```
+
 The output is:
-```
+
+```         
 /data/projects/junhao.chen/shili_homework/02_hisat2_mapping
 ├── SRR25223640.sorted.bam
 ├── SRR25223641.sorted.bam
@@ -154,3 +165,65 @@ The output is:
 
 0 directories, 9 files
 ```
+
+### Mapping results
+
+```         
+Sample  HISAT2_mqc-generalstats-hisat2-overall_alignment_rate
+SRR25223640     89.62
+SRR25223641     89.38
+SRR25223642     88.99
+SRR25223643     89.7
+SRR25223644     89.44
+SRR25223645     89.77
+SRR25223646     89.59
+SRR25223647     89.71
+SRR25223648     90.27
+SRR25223649     89.3
+SRR25223650     89.85
+SRR25223651     90.0
+SRR25223652     90.09
+SRR25223653     89.73
+SRR25223654     90.12
+SRR25223655     88.79
+```
+
+## FeatureCounts
+
+Generate featureCounts commands
+```
+for i in $(ls 02_hisat2_mapping/*bam); do echo "/data/projects/junhao.chen/shili_homework/subread-2.0.2-Linux-x86_64/bin/featureCounts -T 24 -t transcript -p -a /data/projects/junhao.chen/shili_homework/00ref/exonerateTotalCirobuCiinteE
+STs_2018_NCBI.gtf -o /data/projects/junhao.chen/shili_homework/03_featureCounts/$(basename ${i%%.*}).featureCounts ${i}
+" ;done  > run_featureCounts.sh
+```
+
+the results are 
+```
+cat run_featureCounts.sh 
+#!/usr/bin/env bash
+
+#SBATCH --job-name=featureCounts
+#SBATCH --partition=defq
+#SBATCH -n 1
+#SBATCH -c 40
+#SBATCH --get-user-env
+#SBATCH --output=%j.out
+
+/data/projects/junhao.chen/shili_homework/subread-2.0.2-Linux-x86_64/bin/featureCounts -T 40 -t transcript -p -a /data/projects/junhao.chen/shili_homework/00ref/exonerateTotalCirobuCiinteESTs_2018_NCBI.gtf -o /data/projects/junhao.chen/shili_homework/03_featureCounts/SRR25223640.featureCounts 02_hisat2_mapping/SRR25223640.sorted.bam
+/data/projects/junhao.chen/shili_homework/subread-2.0.2-Linux-x86_64/bin/featureCounts -T 40 -t transcript -p -a /data/projects/junhao.chen/shili_homework/00ref/exonerateTotalCirobuCiinteESTs_2018_NCBI.gtf -o /data/projects/junhao.chen/shili_homework/03_featureCounts/SRR25223641.featureCounts 02_hisat2_mapping/SRR25223641.sorted.bam
+/data/projects/junhao.chen/shili_homework/subread-2.0.2-Linux-x86_64/bin/featureCounts -T 40 -t transcript -p -a /data/projects/junhao.chen/shili_homework/00ref/exonerateTotalCirobuCiinteESTs_2018_NCBI.gtf -o /data/projects/junhao.chen/shili_homework/03_featureCounts/SRR25223642.featureCounts 02_hisat2_mapping/SRR25223642.sorted.bam
+/data/projects/junhao.chen/shili_homework/subread-2.0.2-Linux-x86_64/bin/featureCounts -T 40 -t transcript -p -a /data/projects/junhao.chen/shili_homework/00ref/exonerateTotalCirobuCiinteESTs_2018_NCBI.gtf -o /data/projects/junhao.chen/shili_homework/03_featureCounts/SRR25223643.featureCounts 02_hisat2_mapping/SRR25223643.sorted.bam
+/data/projects/junhao.chen/shili_homework/subread-2.0.2-Linux-x86_64/bin/featureCounts -T 40 -t transcript -p -a /data/projects/junhao.chen/shili_homework/00ref/exonerateTotalCirobuCiinteESTs_2018_NCBI.gtf -o /data/projects/junhao.chen/shili_homework/03_featureCounts/SRR25223644.featureCounts 02_hisat2_mapping/SRR25223644.sorted.bam
+/data/projects/junhao.chen/shili_homework/subread-2.0.2-Linux-x86_64/bin/featureCounts -T 40 -t transcript -p -a /data/projects/junhao.chen/shili_homework/00ref/exonerateTotalCirobuCiinteESTs_2018_NCBI.gtf -o /data/projects/junhao.chen/shili_homework/03_featureCounts/SRR25223645.featureCounts 02_hisat2_mapping/SRR25223645.sorted.bam
+/data/projects/junhao.chen/shili_homework/subread-2.0.2-Linux-x86_64/bin/featureCounts -T 40 -t transcript -p -a /data/projects/junhao.chen/shili_homework/00ref/exonerateTotalCirobuCiinteESTs_2018_NCBI.gtf -o /data/projects/junhao.chen/shili_homework/03_featureCounts/SRR25223646.featureCounts 02_hisat2_mapping/SRR25223646.sorted.bam
+/data/projects/junhao.chen/shili_homework/subread-2.0.2-Linux-x86_64/bin/featureCounts -T 40 -t transcript -p -a /data/projects/junhao.chen/shili_homework/00ref/exonerateTotalCirobuCiinteESTs_2018_NCBI.gtf -o /data/projects/junhao.chen/shili_homework/03_featureCounts/SRR25223647.featureCounts 02_hisat2_mapping/SRR25223647.sorted.bam
+/data/projects/junhao.chen/shili_homework/subread-2.0.2-Linux-x86_64/bin/featureCounts -T 40 -t transcript -p -a /data/projects/junhao.chen/shili_homework/00ref/exonerateTotalCirobuCiinteESTs_2018_NCBI.gtf -o /data/projects/junhao.chen/shili_homework/03_featureCounts/SRR25223648.featureCounts 02_hisat2_mapping/SRR25223648.sorted.bam
+/data/projects/junhao.chen/shili_homework/subread-2.0.2-Linux-x86_64/bin/featureCounts -T 40 -t transcript -p -a /data/projects/junhao.chen/shili_homework/00ref/exonerateTotalCirobuCiinteESTs_2018_NCBI.gtf -o /data/projects/junhao.chen/shili_homework/03_featureCounts/SRR25223649.featureCounts 02_hisat2_mapping/SRR25223649.sorted.bam
+/data/projects/junhao.chen/shili_homework/subread-2.0.2-Linux-x86_64/bin/featureCounts -T 40 -t transcript -p -a /data/projects/junhao.chen/shili_homework/00ref/exonerateTotalCirobuCiinteESTs_2018_NCBI.gtf -o /data/projects/junhao.chen/shili_homework/03_featureCounts/SRR25223650.featureCounts 02_hisat2_mapping/SRR25223650.sorted.bam
+/data/projects/junhao.chen/shili_homework/subread-2.0.2-Linux-x86_64/bin/featureCounts -T 40 -t transcript -p -a /data/projects/junhao.chen/shili_homework/00ref/exonerateTotalCirobuCiinteESTs_2018_NCBI.gtf -o /data/projects/junhao.chen/shili_homework/03_featureCounts/SRR25223651.featureCounts 02_hisat2_mapping/SRR25223651.sorted.bam
+/data/projects/junhao.chen/shili_homework/subread-2.0.2-Linux-x86_64/bin/featureCounts -T 40 -t transcript -p -a /data/projects/junhao.chen/shili_homework/00ref/exonerateTotalCirobuCiinteESTs_2018_NCBI.gtf -o /data/projects/junhao.chen/shili_homework/03_featureCounts/SRR25223652.featureCounts 02_hisat2_mapping/SRR25223652.sorted.bam
+/data/projects/junhao.chen/shili_homework/subread-2.0.2-Linux-x86_64/bin/featureCounts -T 40 -t transcript -p -a /data/projects/junhao.chen/shili_homework/00ref/exonerateTotalCirobuCiinteESTs_2018_NCBI.gtf -o /data/projects/junhao.chen/shili_homework/03_featureCounts/SRR25223653.featureCounts 02_hisat2_mapping/SRR25223653.sorted.bam
+/data/projects/junhao.chen/shili_homework/subread-2.0.2-Linux-x86_64/bin/featureCounts -T 40 -t transcript -p -a /data/projects/junhao.chen/shili_homework/00ref/exonerateTotalCirobuCiinteESTs_2018_NCBI.gtf -o /data/projects/junhao.chen/shili_homework/03_featureCounts/SRR25223654.featureCounts 02_hisat2_mapping/SRR25223654.sorted.bam
+/data/projects/junhao.chen/shili_homework/subread-2.0.2-Linux-x86_64/bin/featureCounts -T 40 -t transcript -p -a /data/projects/junhao.chen/shili_homework/00ref/exonerateTotalCirobuCiinteESTs_2018_NCBI.gtf -o /data/projects/junhao.chen/shili_homework/03_featureCounts/SRR25223655.featureCounts 02_hisat2_mapping/SRR25223655.sorted.bam
+```
+
