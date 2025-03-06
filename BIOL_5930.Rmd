@@ -1,0 +1,33 @@
+---
+title: "BIOL_5930"
+output: html_document
+date: "2025-03-06"
+---
+
+```{r}
+library(tidyverse)
+
+# Get all file paths
+file_paths <- list.files("abundance", pattern = "_abundance.tsv$", full.names = TRUE)
+
+# Define merge function
+merge_tables <- function(file) {
+  df <- read_tsv(file) %>%
+    select(1, est_counts) %>%  # Select the first column and `est_counts`
+    rename_with(~ gsub("_abundance.tsv", "", basename(file)), est_counts)  # Rename `est_counts` using the filename
+  return(df)
+}
+
+# Read all tables and merge
+merged_df <- file_paths %>%
+  map(merge_tables) %>% 
+  reduce(full_join, by = colnames(.[[1]])[1])  # Merge by the first column (gene_id)
+
+# View result
+head(merged_df)
+```
+
+```{r}
+# outout read table file
+write_tsv(x = merged_df, file = "readCount.txt")
+```
