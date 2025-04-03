@@ -3,20 +3,20 @@ library(dplyr)
 library(tibble)
 library(tidyverse)
 
-# 设置文件夹路径
+# Set file path 设置文件路径
 count_dir <- "~/Library/CloudStorage/OneDrive-SaintLouisUniversity/BIOL_5930_shili/abundance"  # 修改为你的实际路径
 files <- list.files(count_dir, pattern = "_abundance.tsv$", full.names = TRUE)
 
 # set sample name as colum name 提取样本名作为列名（从文件名中去掉路径和扩展名）
 sample_names <- gsub("_abundance.tsv", "", basename(files))
 
-# 初始化合并矩阵
+# Initialization of the Merge Matrix 初始化合并矩阵
 # read file
 df <- read.table(files[1], header = TRUE, sep = "\t", stringsAsFactors = FALSE)
 counts_matrix <- df %>% select(target_id, est_counts) %>%
   rename(!!sample_names[1] := est_counts)
 
-# 循环读取剩余文件并合并
+# Cyclically read the remaining file and concatenate 循环读取剩余文件并合并
 for (i in 2:length(files)) {
   temp <- read.table(files[i], header = TRUE, sep = "\t", stringsAsFactors = FALSE)
   counts_matrix <- counts_matrix %>%
@@ -62,27 +62,27 @@ BiocManager::install("DESeq2")
 
 library(DESeq2)
 library(dplyr)
-library(readr)   # 如果想用 read_tsv 等函数
-library(tibble)  # 如果想用 rownames_to_column 等函数
+library(readr)   # If you wish to use functions such as `read_tsv`如果想用 read_tsv 等函数
+library(tibble)  # If one wishes to use functions such as `rownames_to_column`, etc.如果想用 rownames_to_column 等函数
 
 # read "counts_matrix.tsv"
 counts_matrix <- read.table(
   file      = "counts_matrix.tsv",
-  header    = TRUE,     # 有表头
-  row.names = 1,        # 第1列是行名(基因ID)
-  sep       = "\t"      # 以制表符分隔
+  header    = TRUE,     # Have a header有表头
+  row.names = 1,        # Column 1 is the row name (gene ID)第1列是行名(基因ID)
+  sep       = "\t"      # Separated by tabs以制表符分隔
 )
 
 # check
 head(counts_matrix)
-dim(counts_matrix)  # 看看行列数
+dim(counts_matrix)  # Examine the number of rows and columns.看看行列数
 
 ##read group infomation
 sample_info <- read.table(
   file               = "abundance/sample.txt", 
-  header             = TRUE,       # 第一行是列名
-  sep                = "\t",       # 以制表符分隔
-  stringsAsFactors   = FALSE       # 不要把字符串自动转为因子
+  header             = TRUE,       # The first row is the column name第一行是列名
+  sep                = "\t",       # tab-separated以制表符分隔
+  stringsAsFactors   = FALSE       # Don't convert strings to factors automatically不要把字符串自动转为因子
 )
 sample_info
 str(sample_info)
@@ -91,73 +91,77 @@ str(sample_info)
 sample_info <- sample_info %>%
   arrange(match(sample, colnames(counts_matrix)))
 
-# 写出到文件
+# save file
 #write_tsv(sample_info,file = "abundance/sample.txt")
 
+#Ensure that the sample information is in consistent order with the columns of the count matrix.
 # 确保样本信息与计数矩阵的列顺序一致
 sample_info <- sample_info[match(colnames(counts_matrix), sample_info$sample),]
 
 ###################################
-# 创建 DESeqDataSet 对象
+# Create a DESeqDataSet object 创建 DESeqDataSet 对象
 dds <- DESeqDataSetFromMatrix(countData = counts_matrix,
                               colData = sample_info,
                               design = ~ condition)
-# 运行 DESeq2 分析
+# Conducting DESeq2 Analysis运行 DESeq2 分析
 dds <- DESeq(dds)
 
-# 获取标准化后的计数
+# Obtaining Standardized Counts获取标准化后的计数
 normalized_counts <- counts(dds, normalized=TRUE)
 
-# 1. 保存 PCA 图
+# 1. save PCA picture 保存 PCA 图
 vsd <- vst(dds, blind=TRUE)
 pca_plot <- plotPCA(vsd, intgroup="condition") +
   theme_minimal() +
   ggtitle("PCA of Normalized Counts")
 pca_plot
+
 # 保存为 PNG 文件
 ggsave("pca_plot.png", pca_plot, width=8, height=6, dpi=300)
 
-# 2. 绘制热图
+# 2. Draw a heat map绘制热图
 library(pheatmap)
 
-# 获取标准化计数
+# Get the normalized count获取标准化计数
 normalized_counts <- counts(dds, normalized=TRUE)
 
-# 选择高变异基因（例如前 50 个最变异的基因）
+# Select highly mutated genes (such as the top 10000 most mutated genes选择高变异基因（例如前 10000 个最变异的基因）
 var_genes <- order(rowVars(normalized_counts), decreasing=TRUE)[1:10000]
 heatmap_data <- normalized_counts[var_genes,]
 #heatmap_data <- normalized_counts
 
-# 创建样本注释并按 condition 排序
+# Create sample comments and sort by condition创建样本注释并按 condition 排序
 annotation_col <- data.frame(
   Condition = sample_info$condition,
   row.names = sample_info$sample
 )
 
 
-# 定义您指定的顺序
+# order 定义您指定的顺序
 desired_order <- c("unfertilised_egg", "fertilised_egg", "16_cell", 
                    "initial_gastrula", "late_neurula", "mid_tailbud_II",
                    "late_tailbud_II", "larva")
 
-# 按指定顺序对样本信息排序
+# Sort sample information according to the specified order按指定顺序对样本信息排序
 sample_info_sorted <- sample_info %>%
   mutate(condition = factor(condition, levels = desired_order)) %>%
   arrange(condition)
 
-# 根据排序后的样本顺序重新排列 heatmap_data 的列
+# Rearrange the columns of heatmap_data according to the sorted samples
+#根据排序后的样本顺序重新排列 heatmap_data 的列
 heatmap_data_sorted <- heatmap_data[, match(sample_info_sorted$sample, colnames(heatmap_data))]
 
-# 创建样本注释，确保 Condition 是因子并使用指定顺序
+# Create sample comments, make sure Condition is a factor and use the specified order
+#创建样本注释，确保 Condition 是因子并使用指定顺序
 annotation_col <- data.frame(
   Condition = factor(sample_info$condition, levels = desired_order),
   row.names = sample_info$sample
 )
 
-# 设置颜色方案
+# set color
 my_palette <- colorRampPalette(c("blue", "white", "red"))(100)
 
-# 绘制热图
+# draw heatmap
 pheatmap(heatmap_data,
          scale = "row",              # 按行标准化
          clustering_distance_rows = "euclidean",
@@ -171,7 +175,7 @@ pheatmap(heatmap_data,
          width = 10,
          height = 8)
 
-# 绘制热图 - 不对列聚类
+# Drawing heat map - Not correct column clustering 绘制热图 - 不对列聚类
 pheatmap(heatmap_data_sorted,
          scale = "row",              # 按行标准化
          cluster_cols = FALSE,       # 不对列聚类
