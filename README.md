@@ -233,7 +233,11 @@ cat run_featureCounts.sh
   
 ## TSV file combination and DESeq2 analysis
 PCA analysis and generate heatmap
+
+
 generate volcanoplot
+
+
 see ReadTSV_and_DESeq2.R
 
 
