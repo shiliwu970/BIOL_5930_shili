@@ -3,20 +3,20 @@ library(dplyr)
 library(tibble)
 library(tidyverse)
 
-# Set file path 设置文件路径
+# Set file path 
 count_dir <- "~/Library/CloudStorage/OneDrive-SaintLouisUniversity/BIOL_5930_shili/abundance"  # 修改为你的实际路径
 files <- list.files(count_dir, pattern = "_abundance.tsv$", full.names = TRUE)
 
 # set sample name as colum name 提取样本名作为列名（从文件名中去掉路径和扩展名）
 sample_names <- gsub("_abundance.tsv", "", basename(files))
 
-# Initialization of the Merge Matrix 初始化合并矩阵
+# Initialization of the Merge Matrix 
 # read file
 df <- read.table(files[1], header = TRUE, sep = "\t", stringsAsFactors = FALSE)
 counts_matrix <- df %>% select(target_id, est_counts) %>%
   rename(!!sample_names[1] := est_counts)
 
-# Cyclically read the remaining file and concatenate 循环读取剩余文件并合并
+# Cyclically read the remaining file and concatenate 
 for (i in 2:length(files)) {
   temp <- read.table(files[i], header = TRUE, sep = "\t", stringsAsFactors = FALSE)
   counts_matrix <- counts_matrix %>%
@@ -33,8 +33,6 @@ counts_matrix_final <- counts_matrix_final[, -1]  # 去掉 target_id 列
 # check results
 head(counts_matrix_final)
 
-library(tibble)
-library(readr)
 
 ###Save results
 counts_matrix_final %>%
@@ -43,9 +41,6 @@ counts_matrix_final %>%
   write_tsv("counts_matrix.tsv")
 
 ###Read tsv file
-library(readr)
-library(dplyr)
-library(tibble)
 
 df <- read_tsv("counts_matrix.tsv") %>%
   column_to_rownames("target_id")
@@ -68,20 +63,20 @@ library(tibble)  # If one wishes to use functions such as `rownames_to_column`, 
 # read "counts_matrix.tsv"
 counts_matrix <- read.table(
   file      = "counts_matrix.tsv",
-  header    = TRUE,     # Have a header有表头
+  header    = TRUE,     # Have a header
   row.names = 1,        # Column 1 is the row name (gene ID)第1列是行名(基因ID)
-  sep       = "\t"      # Separated by tabs以制表符分隔
+  sep       = "\t"      # Separated by tabs
 )
 
 # check
 head(counts_matrix)
-dim(counts_matrix)  # Examine the number of rows and columns.看看行列数
+dim(counts_matrix)  # Examine the number of rows and columns.
 
 ##read group infomation
 sample_info <- read.table(
   file               = "abundance/sample.txt", 
   header             = TRUE,       # The first row is the column name第一行是列名
-  sep                = "\t",       # tab-separated以制表符分隔
+  sep                = "\t",       # tab-separated
   stringsAsFactors   = FALSE       # Don't convert strings to factors automatically不要把字符串自动转为因子
 )
 sample_info
@@ -103,26 +98,25 @@ sample_info <- sample_info[match(colnames(counts_matrix), sample_info$sample),]
 dds <- DESeqDataSetFromMatrix(countData = counts_matrix,
                               colData = sample_info,
                               design = ~ condition)
-# Conducting DESeq2 Analysis运行 DESeq2 分析
+# Conducting DESeq2 Analysis
 dds <- DESeq(dds)
 
-# Obtaining Standardized Counts获取标准化后的计数
+# Obtaining Standardized Counts
 normalized_counts <- counts(dds, normalized=TRUE)
 
-# 1. save PCA picture 保存 PCA 图
+# 1. save PCA picture 
 vsd <- vst(dds, blind=TRUE)
 pca_plot <- plotPCA(vsd, intgroup="condition") +
   theme_minimal() +
   ggtitle("PCA of Normalized Counts")
 pca_plot
 
-# 保存为 PNG 文件
-ggsave("pca_plot.png", pca_plot, width=8, height=6, dpi=300)
+#ggsave("pca_plot.png", pca_plot, width=8, height=6, dpi=300)
 
-# 2. Draw a heat map绘制热图
+# 2. Draw a heat map
 library(pheatmap)
 
-# Get the normalized count获取标准化计数
+# Get the normalized count
 normalized_counts <- counts(dds, normalized=TRUE)
 
 # Select highly mutated genes (such as the top 10000 most mutated genes选择高变异基因（例如前 10000 个最变异的基因）
@@ -137,7 +131,7 @@ annotation_col <- data.frame(
 )
 
 
-# order 定义您指定的顺序
+# order 
 desired_order <- c("unfertilised_egg", "fertilised_egg", "16_cell", 
                    "initial_gastrula", "late_neurula", "mid_tailbud_II",
                    "late_tailbud_II", "larva")
@@ -171,11 +165,11 @@ pheatmap(heatmap_data,
          color = my_palette,
          show_rownames = FALSE,      # 如果基因名太多可以隐藏
         #main = "Heatmap of Top 50 Variable Genes",
-         filename = "heatmap.png",   # 直接保存到文件
+         filename = "heatmap.png",   
          width = 10,
          height = 8)
 
-# Drawing heat map - Not correct column clustering 绘制热图 - 不对列聚类
+# Drawing heat map - Not correct column clustering 
 pheatmap(heatmap_data_sorted,
          scale = "row",              # 按行标准化
          cluster_cols = FALSE,       # 不对列聚类
@@ -188,3 +182,31 @@ pheatmap(heatmap_data_sorted,
          filename = "heatmap_sorted.png",
          width = 10,
          height = 8)
+
+################volcanoplot
+#BiocManager::install("EnhancedVolcano")
+library(EnhancedVolcano)
+
+# Extract the differential expression results between the two conditions
+#    The order of the contrast parameters is: variable name, condition for the numerator (baseline/control),
+#    and condition for the denominator (treatment).
+#    Note: The log2FoldChange in the results represents the log-transformed fold change of the baseline (first condition)
+#    relative to the treatment (second condition).
+res <- results(dds, contrast = c("condition", "initial_gastrula", "late_neurula"))
+
+# Use the EnhancedVolcano package to plot the volcano plot
+volcano_plot <- EnhancedVolcano(res,
+                                lab = rownames(res),           # Gene labels
+                                x = "log2FoldChange",           # Horizontal axis: log2 fold change
+                                y = "pvalue",                   # Vertical axis: p-value (you can also use "padj" for adjusted p-value)
+                                title = "initial_gastrula vs late_neurula",  # Plot title
+                                pCutoff = 0.05,                 # p-value threshold
+                                FCcutoff = 1.0,                 # log2 fold change threshold (adjust as needed)
+                                pointSize = 2.5,                # Size of the points
+                                labSize = 3.0)                  # Size of the labels
+
+# Display the volcano plot
+volcano_plot
+
+# Save the volcano plot as a PNG file with custom dimensions
+ggsave("volcano_plot.png", plot = volcano_plot, width = 8, height = 6, dpi = 300)

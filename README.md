@@ -233,7 +233,9 @@ cat run_featureCounts.sh
   
 ## TSV file combination and DESeq2 analysis
 PCA analysis and generate heatmap
-______see ReadTSV_and_DESeq2.R
+generate volcanoplot
+see ReadTSV_and_DESeq2.R
+
 
 ## GO analysis
 gene functional annotation via eggnog-mapper results
