@@ -6,7 +6,7 @@ Creat Git account 2025.1.22 \## Reproducibility
 
 ## Goal:
 
-The primary goals of this project are:
+This study aims to systematically analyze transcriptome data from eight key developmental stages of the model chordate Ciona, to uncover the dynamic changes in gene expression programs throughout embryonic development. The specific objectives are as follows:
 
 1.	Identification of Differentially Expressed Genes (DEGs):
 Analyze gene expression changes across different developmental stages of Ciona, identifying genes that are significantly upregulated or downregulated at each stage to uncover key regulatory factors involved in developmental progression.
