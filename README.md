@@ -240,7 +240,9 @@ generate volcanoplot
 
 see ReadTSV_and_DESeq2.R
 
+![heatmap](./heatmap_sorted.png)
 ![volcano plot](./volcano_plot.png)
+
 
 ## GO analysis
 gene functional annotation via eggnog-mapper results
