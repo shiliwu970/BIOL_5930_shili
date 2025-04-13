@@ -236,3 +236,5 @@ PCA analysis and generate heatmap
 ______see ReadTSV_and_DESeq2.R
 
 ## GO analysis
+gene functional annotation via eggnog-mapper results
+see folder eggnog_mapper_results
