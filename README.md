@@ -239,7 +239,7 @@ generate volcanoplot
 
 
 see ReadTSV_and_DESeq2.R
-
+![PCA](./pca_plot.png)
 ![heatmap](./heatmap_sorted.png)
 ![volcano plot](./volcano_plot.png)
 
