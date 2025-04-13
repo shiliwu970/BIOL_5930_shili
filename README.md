@@ -8,11 +8,15 @@ Creat Git account 2025.1.22 \## Reproducibility
 
 The primary goals of this project are:
 
-1.  Characterize the Ciona proteome: Establish a high-resolution proteome atlas covering multiple developmental stages to understand the temporal dynamics of protein expression.
-2.  Compare multi-omics profiles: Integrate proteomic and transcriptomic data to assess evolutionary conservation and divergence in gene expression regulation.
-3.  Test the hourglass model: Evaluate whether protein-level conservation follows the hourglass model, which posits that mid-developmental stages show the highest evolutionary constraint.
-4.  Identify divergence in early vertebrate evolution: Investigate the extent of conservation and divergence between Ciona (a tunicate) and Xenopus (a vertebrate), particularly during gastrulation and neurulation.
-5.  Provide a valuable resource: Offer a publicly available dataset for researchers studying developmental biology, evolution, and multi-omics analyses.
+1.	Identification of Differentially Expressed Genes (DEGs):
+Analyze gene expression changes across different developmental stages of Ciona, identifying genes that are significantly upregulated or downregulated at each stage to uncover key regulatory factors involved in developmental progression.
+2.	Functional Enrichment Analysis:
+Perform Gene Ontology (GO) annotation and KEGG pathway enrichment analysis on DEGs from each developmental stage, to reveal their functional roles in processes such as cell differentiation, signal transduction, and morphogenesis.
+3.	Expression Pattern Clustering:
+Apply clustering algorithms (e.g., k-means or hierarchical clustering) to identify gene groups with similar expression trends, construct stage-specific co-expression networks, and explore regulatory modules characteristic of each developmental period.
+4.	Transcriptomic Dynamics Across Developmental Stages:
+Compare overall gene expression profiles between developmental stages to assess the degree of transcriptional divergence or similarity, providing molecular insights into the conservation and diversification of developmental programs.
+
 
 ## Naming system:
 
