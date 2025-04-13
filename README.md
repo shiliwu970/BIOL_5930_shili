@@ -231,3 +231,8 @@ cat run_featureCounts.sh
 /data/projects/junhao.chen/shili_homework/subread-2.0.2-Linux-x86_64/bin/featureCounts -T 40 -t transcript -p -a /data/projects/junhao.chen/shili_homework/00ref/exonerateTotalCirobuCiinteESTs_2018_NCBI.gtf -o /data/projects/junhao.chen/shili_homework/03_featureCounts/SRR25223655.featureCounts 02_hisat2_mapping/SRR25223655.sorted.bam
 ```
   
+## TSV file combination and DESeq2 analysis
+PCA analysis and generate heatmap
+______see ReadTSV_and_DESeq2.R
+
+## GO analysis
