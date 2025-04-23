@@ -244,6 +244,9 @@ see ReadTSV_and_DESeq2.R
 ![volcano plot](./volcano_plot.png)
 
 
-## GO analysis
+## GO and KEGG analysis
 gene functional annotation via eggnog-mapper results
 see folder eggnog_mapper_results
+see KEGG_and_GO_analysis.R
+![KEGG](./KEGG.png)
+![GO](./GO.png)
