@@ -1,6 +1,3 @@
-
-library(dplyr)
-library(tibble)
 library(tidyverse)
 
 # Set file path 
@@ -51,9 +48,9 @@ head(df)
 ###DESeq2
 
 # install DESeq2
-if (!requireNamespace("BiocManager", quietly = TRUE))
-  install.packages("BiocManager")
-BiocManager::install("DESeq2")
+#if (!requireNamespace("BiocManager", quietly = TRUE))
+#  install.packages("BiocManager")
+#  BiocManager::install("DESeq2")
 
 library(DESeq2)
 library(dplyr)
@@ -153,7 +150,7 @@ annotation_col <- data.frame(
 )
 
 # set color
-my_palette <- colorRampPalette(c("blue", "white", "red"))(100)
+#my_palette <- colorRampPalette(c("blue", "white", "red"))(100)
 
 # draw heatmap
 pheatmap(heatmap_data,
@@ -194,6 +191,7 @@ library(EnhancedVolcano)
 #    relative to the treatment (second condition).
 res <- results(dds, contrast = c("condition", "initial_gastrula", "late_neurula"))
 
+
 # Use the EnhancedVolcano package to plot the volcano plot
 volcano_plot <- EnhancedVolcano(res,
                                 lab = rownames(res),           # Gene labels
@@ -203,10 +201,47 @@ volcano_plot <- EnhancedVolcano(res,
                                 pCutoff = 0.05,                 # p-value threshold
                                 FCcutoff = 1.0,                 # log2 fold change threshold (adjust as needed)
                                 pointSize = 2.5,                # Size of the points
-                                labSize = 3.0)                  # Size of the labels
-
+                                labSize = 2.0)
 # Display the volcano plot
 volcano_plot
 
 # Save the volcano plot as a PNG file with custom dimensions
-ggsave("volcano_plot.png", plot = volcano_plot, width = 8, height = 6, dpi = 300)
+ggsave("volcano_plot.png", plot = volcano_plot, width = 10, height = 16, dpi = 300)
+
+
+
+# 设置颜色逻辑：高上调为红色，高下调为蓝色，其余为黑色
+keyvals <- ifelse(
+  res$log2FoldChange > 1 & res$pvalue < 0.05, '#E3C6E0',
+  ifelse(res$log2FoldChange < -1 & res$pvalue < 0.05, '#DBEDC5', '#BBBBBB'))
+
+# 填补缺失值
+keyvals[is.na(keyvals)] <- 'black'
+
+# 设置颜色标签（用于图例和选择标注）
+names(keyvals)[keyvals == '#E3C6E0'] <- 'up'
+names(keyvals)[keyvals == '#DBEDC5'] <- 'down'
+names(keyvals)[keyvals == '#BBBBBB'] <- 'non_sig'
+
+# 绘制 EnhancedVolcano 图
+volcano_plot2 <- EnhancedVolcano(res,
+               lab = rownames(res),
+                x = 'log2FoldChange',
+                y = 'pvalue',
+                title = 'initial_gastrula vs late_neurula',
+                pCutoff = 0.05,
+                FCcutoff = 1.0,
+                pointSize = 2,
+                colCustom = keyvals,
+                colAlpha = 0.75,
+                legendLabSize = 15,
+                legendIconSize = 5.0,
+                arrowheads = FALSE,
+                gridlines.major = TRUE,
+                gridlines.minor = FALSE,
+                border = 'partial',
+                borderWidth = 1.5,
+                labSize = 2.0,
+                borderColour = 'black')
+volcano_plot2
+ggsave("volcano_plot.png", plot = volcano_plot2, width = 10, height = 10, dpi = 300)
