@@ -253,6 +253,12 @@ see folder eggnog_mapper_results
 
 see KEGG_and_GO_analysis.R
 
+add KEGG annotation
+
+
 
 ![KEGG](./KEGG.png)
 ![GO](./GO.png)
+![KEGG_annotation](./kegg_annotation.png)
+
+

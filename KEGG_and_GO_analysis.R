@@ -127,3 +127,65 @@ ggplot(kegg_counts, aes(x = Count, y = reorder(KO, Count))) +
   labs(title = "Top20 KEGG KO Frequency", x = "Gene Count", y = "KO term") +
   theme_minimal()
 
+
+################
+
+if (!requireNamespace("KEGGREST", quietly=TRUE)) {
+  install.packages("BiocManager")
+  BiocManager::install("KEGGREST")
+}
+library(KEGGREST)
+library(dplyr)
+library(tidyr)
+library(clusterProfiler)
+
+# 1. Filter valid KO IDs (format K12345)
+head(kegg_df$KO, 20)
+unique(kegg_df$KO)
+
+kegg_df <- kegg_df %>%
+  mutate(KO = sub("^ko:", "", KO))
+
+valid_kos <- unique(kegg_df$KO) %>% .[grepl("^K\\d{5}$", .)]
+length(valid_kos)  # should be > 0
+if (length(valid_kos) == 0) {
+  stop("No valid KO IDs found. Please check your kegg_df$KO values.")
+}
+
+# 2. Perform KEGG pathway enrichment with enrichKEGG
+kk <- enrichKEGG(
+  gene       = valid_kos,
+  organism   = "ko",         # 表示通用 KO 集合
+  keyType    = "kegg",       # KO ID 格式
+  pvalueCutoff = 0.05
+)
+
+
+# 3. Visualization
+if (is.null(kk) || nrow(as.data.frame(kk)) == 0) {
+  message(" No significant KEGG pathways (p<0.05); plotting top 20 KO frequency instead.")
+  
+  # count the top 20 most frequent KOs
+  ko_counts <- kegg_df %>% 
+    filter(KO %in% valid_kos) %>%
+    count(KO, name = "Count") %>% 
+    arrange(desc(Count)) %>% 
+    slice_head(n = 20)
+  
+
+  library(ggplot2)
+  ggplot(ko_counts, aes(x = Count, y = reorder(KO, Count))) +
+    geom_col(fill = "tomato") +
+    labs(
+      title = "Top20 KO Frequency",
+      x = "Gene Count",
+      y = "KO ID"
+    ) +
+    theme_minimal()
+  
+} else {
+  barplot(kk, showCategory = 20, title = "KEGG Pathway Enrichment")
+  dotplot(kk, showCategory = 20, title = "KEGG Pathway Dotplot")
+}
+
+ggsave("kegg_annotation.png", device = "png", width = 30, height = 30, units = "cm")
