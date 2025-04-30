@@ -4,7 +4,7 @@ library(tidyverse)
 count_dir <- "~/Library/CloudStorage/OneDrive-SaintLouisUniversity/BIOL_5930_shili/abundance"  # 修改为你的实际路径
 files <- list.files(count_dir, pattern = "_abundance.tsv$", full.names = TRUE)
 
-# set sample name as colum name 提取样本名作为列名（从文件名中去掉路径和扩展名）
+# set sample name as colum name 
 sample_names <- gsub("_abundance.tsv", "", basename(files))
 
 # Initialization of the Merge Matrix 
@@ -34,7 +34,7 @@ head(counts_matrix_final)
 ###Save results
 counts_matrix_final %>%
   rownames_to_column(var = "target_id") %>% 
-  mutate(across(-target_id, round)) %>%        # 对除 target_id 以外的所有列进行四舍五入
+  mutate(across(-target_id, round)) %>%        
   write_tsv("counts_matrix.tsv")
 
 ###Read tsv file
@@ -54,14 +54,14 @@ head(df)
 
 library(DESeq2)
 library(dplyr)
-library(readr)   # If you wish to use functions such as `read_tsv`如果想用 read_tsv 等函数
-library(tibble)  # If one wishes to use functions such as `rownames_to_column`, etc.如果想用 rownames_to_column 等函数
+library(readr)   # If you wish to use functions such as `read_tsv`
+library(tibble)  # If one wishes to use functions such as `rownames_to_column`, etc.
 
 # read "counts_matrix.tsv"
 counts_matrix <- read.table(
   file      = "counts_matrix.tsv",
   header    = TRUE,     # Have a header
-  row.names = 1,        # Column 1 is the row name (gene ID)第1列是行名(基因ID)
+  row.names = 1,        # Column 1 is the row name
   sep       = "\t"      # Separated by tabs
 )
 
@@ -72,9 +72,9 @@ dim(counts_matrix)  # Examine the number of rows and columns.
 ##read group infomation
 sample_info <- read.table(
   file               = "abundance/sample.txt", 
-  header             = TRUE,       # The first row is the column name第一行是列名
+  header             = TRUE,       # The first row is the column name
   sep                = "\t",       # tab-separated
-  stringsAsFactors   = FALSE       # Don't convert strings to factors automatically不要把字符串自动转为因子
+  stringsAsFactors   = FALSE       # Don't convert strings to factors automatically
 )
 sample_info
 str(sample_info)
@@ -116,12 +116,12 @@ library(pheatmap)
 # Get the normalized count
 normalized_counts <- counts(dds, normalized=TRUE)
 
-# Select highly mutated genes (such as the top 10000 most mutated genes选择高变异基因（例如前 10000 个最变异的基因）
+# Select highly mutated genes (such as the top 10000 most mutated genes
 var_genes <- order(rowVars(normalized_counts), decreasing=TRUE)[1:10000]
 heatmap_data <- normalized_counts[var_genes,]
 #heatmap_data <- normalized_counts
 
-# Create sample comments and sort by condition创建样本注释并按 condition 排序
+# Create sample comments and sort by condition
 annotation_col <- data.frame(
   Condition = sample_info$condition,
   row.names = sample_info$sample
@@ -133,7 +133,7 @@ desired_order <- c("unfertilised_egg", "fertilised_egg", "16_cell",
                    "initial_gastrula", "late_neurula", "mid_tailbud_II",
                    "late_tailbud_II", "larva")
 
-# Sort sample information according to the specified order按指定顺序对样本信息排序
+# Sort sample information according to the specified order
 sample_info_sorted <- sample_info %>%
   mutate(condition = factor(condition, levels = desired_order)) %>%
   arrange(condition)
@@ -153,13 +153,13 @@ annotation_col <- data.frame(
 
 # draw heatmap
 pheatmap(heatmap_data,
-         scale = "row",              # 按行标准化
+         scale = "row",              
          clustering_distance_rows = "euclidean",
          cluster_cols = F,
          clustering_method = "complete",
          annotation_col = annotation_col,
          color = my_palette,
-         show_rownames = FALSE,      # 如果基因名太多可以隐藏
+         show_rownames = FALSE,      
         #main = "Heatmap of Top 50 Variable Genes",
          filename = "heatmap.png",   
          width = 10,
@@ -167,8 +167,8 @@ pheatmap(heatmap_data,
 
 # Drawing heat map - Not correct column clustering 
 pheatmap(heatmap_data_sorted,
-         scale = "row",              # 按行标准化
-         cluster_cols = FALSE,       # 不对列聚类
+         scale = "row",              
+         cluster_cols = FALSE,       
          clustering_distance_rows = "euclidean",
          clustering_method = "complete",
          annotation_col = annotation_col,

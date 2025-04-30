@@ -238,7 +238,7 @@ PCA analysis and generate heatmap
 generate volcanoplot
 
 
-see ReadTSV_and_DESeq2.R
+see 03_ReadTSV_and_DESeq2.R
 ![PCA](./pca_plot.png)
 ![heatmap](./heatmap_sorted.png)
 ![volcano plot](./volcano_plot.png)
@@ -248,7 +248,7 @@ see ReadTSV_and_DESeq2.R
 gene functional annotation via eggnog-mapper results
 
 
-see folder eggnog_mapper_results
+see folder 04_eggnog_mapper_results
 
 
 see KEGG_and_GO_analysis.R
@@ -257,8 +257,8 @@ add KEGG annotation
 
 
 
-![KEGG](./KEGG.png)
-![GO](./GO.png)
-![KEGG_annotation](./kegg_annotation.png)
+![KEGG](./05_results/KEGG.png)
+![GO](./05_results/GO.png)
+![KEGG_annotation](./05_results/kegg_annotation.png)
 
 
