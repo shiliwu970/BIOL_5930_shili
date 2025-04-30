@@ -239,9 +239,9 @@ generate volcanoplot
 
 
 see 03_ReadTSV_and_DESeq2.R
-![PCA](./pca_plot.png)
-![heatmap](./heatmap_sorted.png)
-![volcano plot](./volcano_plot.png)
+![PCA](./05_results/pca_plot.png)
+![heatmap](./05_results/heatmap_sorted.png)
+![volcano plot](./05_results/volcano_plot.png)
 
 
 ## GO and KEGG analysis
@@ -254,7 +254,6 @@ see folder 04_eggnog_mapper_results
 see KEGG_and_GO_analysis.R
 
 add KEGG annotation
-
 
 
 ![KEGG](./05_results/KEGG.png)
