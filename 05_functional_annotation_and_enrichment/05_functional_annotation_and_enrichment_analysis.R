@@ -155,8 +155,8 @@ if (length(valid_kos) == 0) {
 # 2. Perform KEGG pathway enrichment with enrichKEGG
 kk <- enrichKEGG(
   gene       = valid_kos,
-  organism   = "ko",         # 表示通用 KO 集合
-  keyType    = "kegg",       # KO ID 格式
+  organism   = "ko",         
+  keyType    = "kegg",       
   pvalueCutoff = 0.05
 )
 

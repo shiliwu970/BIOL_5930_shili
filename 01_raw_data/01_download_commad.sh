@@ -1,0 +1,1 @@
+fastq-dl -a PRJNA993286 --prefix PRJNA993286 --cpus 16
