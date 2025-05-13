@@ -1,3 +1,13 @@
+
+# install DESeq2
+#if (!requireNamespace("BiocManager", quietly = TRUE))
+#  install.packages("BiocManager")
+#  BiocManager::install("DESeq2")
+
+library(DESeq2)
+library(dplyr)
+library(readr)   
+library(tibble)
 library(tidyverse)
 
 # Set file path 
@@ -45,17 +55,8 @@ head(df)
 
 
 
-###DESeq2
-
-# install DESeq2
-#if (!requireNamespace("BiocManager", quietly = TRUE))
-#  install.packages("BiocManager")
-#  BiocManager::install("DESeq2")
-
-library(DESeq2)
-library(dplyr)
-library(readr)   # If you wish to use functions such as `read_tsv`
-library(tibble)  # If one wishes to use functions such as `rownames_to_column`, etc.
+###DESeq2 to analysis different gene expression
+  
 
 # read "counts_matrix.tsv"
 counts_matrix <- read.table(
@@ -87,11 +88,10 @@ sample_info <- sample_info %>%
 #write_tsv(sample_info,file = "abundance/sample.txt")
 
 #Ensure that the sample information is in consistent order with the columns of the count matrix.
-# 确保样本信息与计数矩阵的列顺序一致
 sample_info <- sample_info[match(colnames(counts_matrix), sample_info$sample),]
 
 ###################################
-# Create a DESeqDataSet object 创建 DESeqDataSet 对象
+# Create a DESeqDataSet object 
 dds <- DESeqDataSetFromMatrix(countData = counts_matrix,
                               colData = sample_info,
                               design = ~ condition)

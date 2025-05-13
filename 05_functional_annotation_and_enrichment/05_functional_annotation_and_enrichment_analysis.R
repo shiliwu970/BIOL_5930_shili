@@ -1,4 +1,4 @@
-
+###1.install packages and library
 install.packages(c("tidyverse", "readxl", "janitor"))
 if (!requireNamespace("BiocManager", quietly = TRUE)) install.packages("BiocManager")
 BiocManager::install("clusterProfiler")
@@ -7,6 +7,15 @@ library(tidyverse)
 library(readxl)          
 library(janitor)         # clean_names()
 library(clusterProfiler) # enricher, barplot, dotplot
+
+if (!requireNamespace("KEGGREST", quietly=TRUE)) {
+  install.packages("BiocManager")
+  BiocManager::install("KEGGREST")
+}
+library(KEGGREST)
+library(dplyr)
+library(tidyr)
+library(clusterProfiler)
 
 # 2. Read in the data and clean column names
 fn <- "~/Library/CloudStorage/OneDrive-SaintLouisUniversity/BIOL_5930_shili/eggnog_mapper_results/out.emapper.annotations.xlsx"
@@ -130,14 +139,7 @@ ggplot(kegg_counts, aes(x = Count, y = reorder(KO, Count))) +
 
 ################
 
-if (!requireNamespace("KEGGREST", quietly=TRUE)) {
-  install.packages("BiocManager")
-  BiocManager::install("KEGGREST")
-}
-library(KEGGREST)
-library(dplyr)
-library(tidyr)
-library(clusterProfiler)
+
 
 # 1. Filter valid KO IDs (format K12345)
 head(kegg_df$KO, 20)
